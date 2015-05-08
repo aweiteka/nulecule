@@ -1,0 +1,21 @@
+---
+specversion: 0.0.1-alpha
+id: wordpress-app
+
+metadata:
+  name: Wordpress App
+  appversion: 0.0.1
+  description: Simple Wordpress atomic app. Uses remote mysql atomic app.
+graph:
+  mysql-app:
+    source: docker://aweiteka/mysql:app
+  wordpress-app:
+    params:
+      db_pass:
+        description: Database password. Must match the database password used in mysql-app
+      wp_public_ip:
+        description: Public IP address of host where Wordpress frontend service will be attached to
+    artifacts:
+      kubernetes:
+        - file://graph/k8s/wordpress.yaml
+        - file://graph/k8s/wordpress-service.yaml
