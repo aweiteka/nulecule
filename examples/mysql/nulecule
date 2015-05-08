@@ -1,0 +1,17 @@
+---
+specversion: 0.0.1-alpha
+id: mysql-app
+
+metadata:
+  name: MySQL App
+  appversion: 0.0.1
+  description: MySQL atomic app
+graph:
+  mysql-app:
+    params:
+      db_pass:
+        description: Database password
+    artifacts:
+      kubernetes:
+        - file://graph/k8s/mysql.yaml
+        - file://graph/k8s/mysql-service.yaml
