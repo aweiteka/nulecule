@@ -1,0 +1,19 @@
+FROM busybox:ubuntu-14.04
+
+ADD ./bin/guestbook /app/guestbook
+ADD ./_src/public/index.html /app/public/index.html
+ADD ./_src/public/script.js /app/public/script.js
+ADD ./_src/public/style.css /app/public/style.css
+
+WORKDIR /app
+CMD ["./guestbook"]
+EXPOSE 3000
+
+# appended items from Nulecule build script
+LABEL provides.service.name="guestbookfront" \
+      io.k8s.guestbookfront.parameter.image.description="The frontend part" \
+      io.k8s.guestbookfront.parameter.image.default="kubernetes/guestbook:v2" \
+      requires.service.name="redis" \
+      requires.service.redis.source="docker://projectatomic/redis-centos7-atomicapp" \
+      io.k8s.object.rc="a:4:{s:4:"kind";s:21:"ReplicationController";s:10:"apiVersion";s:2:"v1";s:8:"metadata";a:2:{s:4:"name";s:9:"guestbook";s:6:"labels";a:1:{s:3:"app";s:9:"guestbook";}}s:4:"spec";a:3:{s:8:"replicas";i:3;s:8:"selector";a:1:{s:3:"app";s:9:"guestbook";}s:8:"template";a:2:{s:8:"metadata";a:1:{s:6:"labels";a:1:{s:3:"app";s:9:"guestbook";}}s:4:"spec";a:1:{s:10:"containers";a:1:{i:0;a:3:{s:4:"name";s:9:"guestbook";s:5:"image";s:6:"$image";s:5:"ports";a:1:{i:0;a:2:{s:4:"name";s:11:"http-server";s:13:"containerPort";i:3000;}}}}}}}}" \
+      io.k8s.object.service="a:4:{s:4:"kind";s:7:"Service";s:10:"apiVersion";s:2:"v1";s:8:"metadata";a:2:{s:4:"name";s:9:"guestbook";s:6:"labels";a:1:{s:3:"app";s:9:"guestbook";}}s:4:"spec";a:3:{s:5:"ports";a:1:{i:0;a:2:{s:4:"port";i:3000;s:10:"targetPort";s:11:"http-server";}}s:8:"selector";a:1:{s:3:"app";s:9:"guestbook";}s:4:"type";s:12:"LoadBalancer";}}"

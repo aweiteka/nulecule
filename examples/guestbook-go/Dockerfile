@@ -1,9 +1,11 @@
-FROM projectatomic/atomicapp:0.1.11
+FROM busybox:ubuntu-14.04
 
-MAINTAINER Jason Brooks <jbrooks@redhat.com>
+ADD ./bin/guestbook /app/guestbook
+ADD ./_src/public/index.html /app/public/index.html
+ADD ./_src/public/script.js /app/public/script.js
+ADD ./_src/public/style.css /app/public/style.css
 
-LABEL io.projectatomic.nulecule.providers="kubernetes" \
-      io.projectatomic.nulecule.specversion="0.0.2"
+WORKDIR /app
+CMD ["./guestbook"]
+EXPOSE 3000
 
-ADD /Nulecule /Dockerfile README.md /application-entity/
-ADD /artifacts /application-entity/artifacts
